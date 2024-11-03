@@ -10,6 +10,6 @@ repositories {
 }
 
 dependencies {
-    // GSON
-    implementation("com.google.code.gson:gson:2.11.0");
+    // Json library
+    implementation("org.json:json:20240303")
 }

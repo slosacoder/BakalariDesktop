@@ -21,7 +21,7 @@ With Baka4J, the JSON serialization to Java objects is as seamless as slicing th
 
 - Lightweight: Minimizes dependencies to keep the library fast and manageable.
 - Reliable: Provides stable access to Bakalari’s API without frequent updates.
-- Developer-friendly: The codebase is designed for clarity and ease of use, following modern Java best practices.
+- Developer-friendly: The codebase is designed for clarity and ease of use, following modern Java best practices. With nice documentation and sample code you can use the wrapper with ease!
 
 ## Getting Started
 
