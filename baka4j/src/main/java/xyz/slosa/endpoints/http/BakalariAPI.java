@@ -25,7 +25,6 @@ public class BakalariAPI {
 
     private final String schoolURL;
 
-    private static final String CLIENT_ID = "ANDR";
     private final Consumer<String> logger;
 
     public BakalariAPI(final String schoolURL, final Consumer<String> logger) {
@@ -39,13 +38,14 @@ public class BakalariAPI {
         this.logger = null;
     }
 
-    public void request(AbstractBakaHttpRequest httpRequest) throws IOException, InterruptedException {
+
+
+    public void post(AbstractBakaHttpRequest httpRequest) throws IOException, InterruptedException {
         // FINDME :: http deserialization logic
         final HttpClient client = HttpClient.newHttpClient();
 
         // Prepare the request body
-        final String requestBody = String.format(httpRequest.getEndpoint(), // Set the endpoint and encode only the client_id
-                URLEncoder.encode(CLIENT_ID, StandardCharsets.UTF_8));
+        final String requestBody = httpRequest.getEndpoint();
 
         // Create the POST request
         final HttpRequest request = HttpRequest.newBuilder()
@@ -70,13 +70,13 @@ public class BakalariAPI {
 
     }
 
-    public CompletableFuture<Object> requestAsync(AbstractBakaHttpRequest httpRequest) {
+    public CompletableFuture<Object> postAsync(AbstractBakaHttpRequest httpRequest) {
         // FINDME :: async http deserialization logic
         final HttpClient client = HttpClient.newHttpClient();
 
         // Prepare the request body
-        final String requestBody = String.format(httpRequest.getEndpoint(),
-                URLEncoder.encode(CLIENT_ID, StandardCharsets.UTF_8));
+        final String requestBody = httpRequest.getEndpoint();
+
 
         // Create the POST request
         final HttpRequest request = HttpRequest.newBuilder()

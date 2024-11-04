@@ -1,17 +1,15 @@
 package xyz.slosa.endpoints.http;
 
 import org.json.JSONObject;
-import xyz.slosa.objects.ErrorObject;
-import xyz.slosa.objects.BakaObject;
 
 /**
  * @author slosa
  * @created 03.11.24, Sunday
  * CC BakalariDesktop's contributors, use according to the license!
  **/
-public abstract class AbstractBakaHttpRequest<O extends BakaObject> {
+public abstract class AbstractBakaHttpRequest<T> {
     private final String endpoint;
-    private O object;
+    private T object;
     private BakaRequestStatus status;
 
     public AbstractBakaHttpRequest(final String endpoint) {
@@ -19,15 +17,15 @@ public abstract class AbstractBakaHttpRequest<O extends BakaObject> {
         this.status = BakaRequestStatus.UNHANDLED;
     }
 
-    public abstract O deserialize(final JSONObject jsonObject);
+    public abstract T deserialize(final JSONObject jsonObject);
 
-    public void setObject(final O object) {
+    public void setObject(final T object) {
         this.object = object;
     }
 
-    public O getData() {
+    public T getData() {
         if (object == null || status == BakaRequestStatus.UNHANDLED || status == BakaRequestStatus.ERROR) {
-            return (O) new ErrorObject(); // you are trying to get data before request was issued or there was a error while issuing, can't happen!
+            throw new RuntimeException("Object is null or request wasn't handled yet! (object: " + object + ", request: " + getClass().getSimpleName()); // you are trying to get data before request was issued or there was a error while issuing, can't happen!
         } else {
             return object; // Success!
         }
