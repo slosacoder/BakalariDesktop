@@ -6,8 +6,4 @@ package xyz.slosa.objects;
  * CC BakalariDesktop's contributors, use according to the license!
  **/
 public interface BakaObject {
-
-    default String status() {
-        return "No Status";
-    }
 }

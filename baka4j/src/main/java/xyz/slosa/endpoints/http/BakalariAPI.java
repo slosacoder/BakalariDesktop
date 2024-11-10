@@ -2,108 +2,89 @@ package xyz.slosa.endpoints.http;
 
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.net.URI;
-import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 /**
- * @author : slosa
- * @created : 03.11.24, Sunday
- * CC BakalariDesktop's contributors, use according to the license!
- **/
-
-/**
- * A Main class for accessing the api, contains also all the logic for http handling, proceed with caution
+ * A class for interacting with the Bakalari API, which facilitates sending HTTP requests
+ * to the Bakalari server and handling the responses.
  */
 public class BakalariAPI {
 
     private final String schoolURL;
-
-    private static final String CLIENT_ID = "ANDR";
+    private static final String CONTENT_TYPE = "application/x-www-form-urlencoded";
     private final Consumer<String> logger;
+    private String accessToken;
 
+    /**
+     * Constructor for the BakalariAPI that includes logging functionality.
+     *
+     * @param schoolURL the base URL of the school Bakalari API
+     * @param logger    a Consumer that logs messages (can be null for non-debug purposes)
+     */
     public BakalariAPI(final String schoolURL, final Consumer<String> logger) {
         this.schoolURL = schoolURL;
         this.logger = logger;
     }
 
-    // No Debug
+    /**
+     * Constructor for the BakalariAPI that does not include logging functionality.
+     *
+     * @param schoolURL the base URL of the school Bakalari API
+     */
     public BakalariAPI(final String schoolURL) {
         this.schoolURL = schoolURL;
         this.logger = null;
     }
 
-    public void request(AbstractBakaHttpRequest httpRequest) throws IOException, InterruptedException {
-        // FINDME :: http deserialization logic
+    /**
+     * Sends an HTTP request to the Bakalari API asynchronously and processes the response.
+     *
+     * @param httpRequest the request to be sent, extending AbstractBakaHttpRequest
+     * @return a CompletableFuture containing the updated request object
+     */
+    public CompletableFuture<AbstractBakaHttpRequest> request(AbstractBakaHttpRequest httpRequest) {
         final HttpClient client = HttpClient.newHttpClient();
 
-        // Prepare the request body
-        final String requestBody = String.format(httpRequest.getEndpoint(), // Set the endpoint and encode only the client_id
-                URLEncoder.encode(CLIENT_ID, StandardCharsets.UTF_8));
+        // Construct the full URL for the request
+        final String requestUrl = String.format("%s/%s", schoolURL, httpRequest.getEndpoint());
 
-        // Create the POST request
+        // Create the GET request with the necessary headers, including authorization
         final HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(schoolURL))
-                .header("Content-Type", "application/x-www-form-urlencoded")
-                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                .build();
-
-        // Send the request and get the response
-        final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-        // Check if the response status is 200 (OK), pass it to the deserialization mechanism
-        if (response.statusCode() == 200) {
-            httpRequest.setObject(httpRequest.deserialize(new JSONObject(response.body())));
-            httpRequest.setHandled(); // make it actually usable
-            logger.accept("Successfully received response: " + response.body());
-        } else {
-            // Handle bad responses
-            logger.accept("Response failed: " + response.statusCode());
-            logger.accept("Response: " + response.body());
-        }
-
-    }
-
-    public CompletableFuture<Object> requestAsync(AbstractBakaHttpRequest httpRequest) {
-        // FINDME :: async http deserialization logic
-        final HttpClient client = HttpClient.newHttpClient();
-
-        // Prepare the request body
-        final String requestBody = String.format(httpRequest.getEndpoint(),
-                URLEncoder.encode(CLIENT_ID, StandardCharsets.UTF_8));
-
-        // Create the POST request
-        final HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(schoolURL))
-                .header("Content-Type", "application/x-www-form-urlencoded")
-                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .uri(URI.create(requestUrl))
+                .header("Content-Type", CONTENT_TYPE)
+                .header("Authorization", "Bearer " + accessToken)
+                .GET()
                 .build();
 
         // Send the request asynchronously and handle the response
         return client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                 .thenApply(response -> {
                     if (response.statusCode() == 200) {
-                        // Deserialize and handle the response if successful
-                        httpRequest.setObject(httpRequest.deserialize(new JSONObject(response.body())));
-                        httpRequest.setHandled();
-                        logger.accept("Successfully received response: " + response.body());
+                        // On success, deserialize the response body into the request object
+                        httpRequest.deserialize(new JSONObject(response.body()));
+                        if (logger != null) {
+                            logger.accept("Successfully received response: " + response.body());
+                        }
                     } else {
-                        // Log error information if response is unsuccessful
-                        logger.accept("Response failed: " + response.statusCode());
-                        logger.accept("Response: " + response.body());
+                        // On failure, log the status code and body of the response
+                        if (logger != null) {
+                            logger.accept("Response failed: " + response.statusCode());
+                            logger.accept("Response: " + response.body());
+                        }
                     }
-                    return null; // No return value needed for this example
+                    return httpRequest; // Return the httpRequest object, regardless of success or failure
                 })
                 .exceptionally(ex -> {
-                    // Log exceptions if any occur during the request
-                    logger.accept("Request failed with exception: " + ex.getMessage());
-                    return null; // Return null in case of exception
+                    // Handle any exceptions that occurred during the request
+                    if (logger != null) {
+                        logger.accept("Request failed with exception: " + ex.getMessage());
+                    }
+                    return httpRequest; // Return the httpRequest object, even in case of an exception
                 });
     }
 }

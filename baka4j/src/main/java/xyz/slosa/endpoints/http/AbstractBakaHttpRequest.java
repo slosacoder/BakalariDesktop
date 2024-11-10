@@ -1,46 +1,54 @@
 package xyz.slosa.endpoints.http;
 
 import org.json.JSONObject;
-import xyz.slosa.objects.ErrorObject;
 import xyz.slosa.objects.BakaObject;
 
 /**
- * @author slosa
- * @created 03.11.24, Sunday
- * CC BakalariDesktop's contributors, use according to the license!
- **/
+ * Abstract base class for handling HTTP requests to the Bakalari API.
+ * This class defines how requests should be processed and deserialized into specific objects.
+ *
+ * @param <O> The type of the object that will hold the deserialized data.
+ */
 public abstract class AbstractBakaHttpRequest<O extends BakaObject> {
     private final String endpoint;
     private O object;
-    private BakaRequestStatus status;
 
+    /**
+     * Constructor to initialize the endpoint for the HTTP request.
+     *
+     * @param endpoint the API endpoint for this request
+     */
     public AbstractBakaHttpRequest(final String endpoint) {
         this.endpoint = endpoint;
-        this.status = BakaRequestStatus.UNHANDLED;
     }
 
+    /**
+     * This method should populate the `object` field with the deserialized data from the JSON object.
+     * It can also return the deserialized object if needed.
+     *
+     * @param jsonObject the JSON object containing the data to be deserialized
+     * @return the deserialized object of type O
+     */
     public abstract O deserialize(final JSONObject jsonObject);
 
-    public void setObject(final O object) {
-        this.object = object;
-    }
-
+    /**
+     * Returns the deserialized object data, if it exists.
+     *
+     * @return the deserialized object of type O
+     * @throws NullPointerException if the object has not been deserialized (i.e., is null)
+     */
     public O getData() {
-        if (object == null || status == BakaRequestStatus.UNHANDLED || status == BakaRequestStatus.ERROR) {
-            return (O) new ErrorObject(); // you are trying to get data before request was issued or there was a error while issuing, can't happen!
-        } else {
-            return object; // Success!
+        if (object == null) {
+            throw new NullPointerException("There was an error while issuing the request: " + getClass().getSimpleName() + ", hash(" + hashCode() + ")");
         }
+        return object; // Return the actual object data on success
     }
 
-    enum BakaRequestStatus {
-        HANDLED, UNHANDLED, ERROR;
-    }
-
-    public void setHandled() {
-        status = BakaRequestStatus.HANDLED;
-    }
-
+    /**
+     * Returns the API endpoint associated with this request.
+     *
+     * @return the API endpoint string
+     */
     public String getEndpoint() {
         return endpoint;
     }
