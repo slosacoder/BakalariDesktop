@@ -3,9 +3,11 @@ package xyz.slosa.endpoints.http;
 import org.json.JSONObject;
 
 import java.net.URI;
+import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
@@ -48,6 +50,9 @@ public class BakalariAPI {
      * @return a CompletableFuture containing the updated request object
      */
     public CompletableFuture<AbstractBakaHttpRequest> request(AbstractBakaHttpRequest httpRequest) {
+        if (accessToken == null && logger != null)
+            throw new NullPointerException("No access token provided! Cannot retrieve data!");
+
         final HttpClient client = HttpClient.newHttpClient();
 
         // Construct the full URL for the request
@@ -64,7 +69,7 @@ public class BakalariAPI {
         // Send the request asynchronously and handle the response
         return client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                 .thenApply(response -> {
-                    if (response.statusCode() == 200) {
+                    if (response.statusCode() == 200) { // OK
                         // On success, deserialize the response body into the request object
                         httpRequest.deserialize(new JSONObject(response.body()));
                         if (logger != null) {
@@ -85,6 +90,60 @@ public class BakalariAPI {
                         logger.accept("Request failed with exception: " + ex.getMessage());
                     }
                     return httpRequest; // Return the httpRequest object, even in case of an exception
+                });
+    }
+
+    /**
+     * Authenticates the user with the Bakalari API using username and password,
+     * and retrieves the access and refresh tokens.
+     *
+     * @param username The username for the API.
+     * @param password The password for the API.
+     * @return A CompletableFuture that completes with a boolean indicating success (true) or failure (false).
+     */
+    public CompletableFuture<Boolean> authenticate(String username, String password) {
+        final HttpClient client = HttpClient.newHttpClient();
+
+        // Prepare the login URL
+        final String loginUrl = String.format("%s/api/login", schoolURL);
+
+        // Prepare the form data for the request body
+        String requestBody = String.format("client_id=ANDR&grant_type=password&username=%s&password=%s",
+                URLEncoder.encode(username, StandardCharsets.UTF_8),
+                URLEncoder.encode(password, StandardCharsets.UTF_8));
+
+        // Create the POST request
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(loginUrl))
+                .header("Content-Type", CONTENT_TYPE)
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
+
+        // Send the request asynchronously
+        return client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenApply(response -> {
+                    if (response.statusCode() == 200) { // OK
+                        // Parse the response JSON
+                        JSONObject jsonResponse = new JSONObject(response.body());
+                        accessToken = jsonResponse.optString("access_token", null); // Only access token needed
+
+                        if (logger != null) {
+                            logger.accept("Authentication successful. Access Token obtained: " + accessToken);
+                        }
+                        return true; // Authentication succeeded
+                    } else {
+                        if (logger != null) {
+                            logger.accept("Authentication failed with status code: " + response.statusCode());
+                            logger.accept("Response: " + response.body());
+                        }
+                        return false; // Authentication failed
+                    }
+                })
+                .exceptionally(ex -> {
+                    if (logger != null) {
+                        logger.accept("Authentication request failed with exception: " + ex.getMessage());
+                    }
+                    return false; // Authentication failed due to exception
                 });
     }
 }
