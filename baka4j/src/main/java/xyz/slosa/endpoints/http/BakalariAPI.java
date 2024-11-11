@@ -52,15 +52,16 @@ public class BakalariAPI {
         // Send the request asynchronously and handle the response
         return client.sendAsync(request, HttpResponse.BodyHandlers.ofString()).thenApply(response -> {
             if (response.statusCode() == 200) { // OK
-                // On success, deserialize the response body into the request object
-                httpRequest.fillData(httpRequest.deserialize(new JSONObject(response.body())));
+                // On success
                 logger.accept("Successfully received response: " + response.body());
             } else {
                 // On failure, log the status code and body of the response
                 logger.accept("Response failed: " + response.statusCode());
                 logger.accept("Response: " + response.body());
             }
-            return httpRequest;
+            // Deserialize the response body into the request object
+            httpRequest.fillData(httpRequest.deserialize(new JSONObject(response.body())));
+            return httpRequest; // Return the request
         }).exceptionally(ex -> {
             // Handle any exceptions that occurred during the request
             logger.accept("Request failed with exception: " + ex.getMessage());
@@ -90,15 +91,16 @@ public class BakalariAPI {
         // Send the request asynchronously and handle the response
         return client.sendAsync(request, HttpResponse.BodyHandlers.ofString()).thenApply(response -> {
             if (response.statusCode() == 200) { // OK
-                // On success, deserialize the response body into the request object
-                httpRequest.fillData(httpRequest.deserialize(new JSONObject(response.body())));
+                // On success
                 logger.accept("Successfully received response: " + response.body());
             } else {
                 // On failure, log the status code and body of the response
                 logger.accept("Response failed: " + response.statusCode());
                 logger.accept("Response: " + response.body());
             }
-            return httpRequest;
+            // Deserialize the response body into the request object
+            httpRequest.fillData(httpRequest.deserialize(new JSONObject(response.body())));
+            return httpRequest; // Return the request
         }).exceptionally(ex -> {
             // Handle any exceptions that occurred during the request
             logger.accept("Request failed with exception: " + ex.getMessage());
