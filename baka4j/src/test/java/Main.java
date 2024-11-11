@@ -1,4 +1,4 @@
-import xyz.slosa.endpoints.http.BakalariAPI;
+import xyz.slosa.BakalariAPI;
 import xyz.slosa.endpoints.http.impl.login.LoginWithCredentialsBakaRequest;
 
 /**

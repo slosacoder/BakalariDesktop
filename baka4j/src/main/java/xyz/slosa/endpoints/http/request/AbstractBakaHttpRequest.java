@@ -1,4 +1,4 @@
-package xyz.slosa.endpoints.http;
+package xyz.slosa.endpoints.http.request;
 
 import org.json.JSONObject;
 import xyz.slosa.objects.BakaObject;

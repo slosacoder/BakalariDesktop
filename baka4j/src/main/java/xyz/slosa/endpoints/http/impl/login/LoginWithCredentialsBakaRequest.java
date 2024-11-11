@@ -1,10 +1,10 @@
 package xyz.slosa.endpoints.http.impl.login;
 
 import org.json.JSONObject;
-import xyz.slosa.endpoints.http.AbstractBakaHttpRequest;
-import xyz.slosa.objects.impl.LoginData;
+import xyz.slosa.endpoints.http.request.AbstractBakaHttpRequest;
+import xyz.slosa.objects.impl.LoginDataObject;
 
-public class LoginWithCredentialsBakaRequest extends AbstractBakaHttpRequest<LoginData> {
+public class LoginWithCredentialsBakaRequest extends AbstractBakaHttpRequest<LoginDataObject> {
 
     private final String login, password;
 
@@ -15,8 +15,8 @@ public class LoginWithCredentialsBakaRequest extends AbstractBakaHttpRequest<Log
     }
 
     @Override
-    public LoginData deserialize(final JSONObject jsonObject) {
+    public LoginDataObject deserialize(final JSONObject jsonObject) {
         final String accessToken = jsonObject.optString("access_token"); // Main thing we want is the access token
-        return new LoginData(login, password, accessToken);
+        return new LoginDataObject(login, password, accessToken);
     }
 }

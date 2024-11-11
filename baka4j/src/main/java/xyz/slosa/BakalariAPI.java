@@ -1,6 +1,7 @@
-package xyz.slosa.endpoints.http;
+package xyz.slosa;
 
 import org.json.JSONObject;
+import xyz.slosa.endpoints.http.request.AbstractBakaHttpRequest;
 import xyz.slosa.objects.BakaObject;
 
 import java.net.URI;
