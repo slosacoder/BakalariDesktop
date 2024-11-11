@@ -7,11 +7,11 @@ import xyz.slosa.objects.BakaObject;
  * Abstract base class for handling HTTP requests to the Bakalari API.
  * This class defines how requests should be processed and deserialized into specific objects.
  *
- * @param <O> The type of the object that will hold the deserialized data.
+ * @param <T> The type of the object that will hold the deserialized data.
  */
-public abstract class AbstractBakaHttpRequest<O extends BakaObject> {
+public abstract class AbstractBakaHttpRequest<T extends BakaObject> {
     private final String endpoint;
-    private O object;
+    private T object;
 
     /**
      * Constructor to initialize the endpoint for the HTTP request.
@@ -29,7 +29,7 @@ public abstract class AbstractBakaHttpRequest<O extends BakaObject> {
      * @param jsonObject the JSON object containing the data to be deserialized
      * @return the deserialized object of type O
      */
-    public abstract O deserialize(final JSONObject jsonObject);
+    public abstract T deserialize(final JSONObject jsonObject);
 
     /**
      * Returns the deserialized object data, if it exists.
@@ -37,11 +37,14 @@ public abstract class AbstractBakaHttpRequest<O extends BakaObject> {
      * @return the deserialized object of type O
      * @throws NullPointerException if the object has not been deserialized (i.e., is null)
      */
-    public O getData() {
-        if (object == null) {
+    public T getData() {
+        if (object == null)
             throw new NullPointerException("There was an error while issuing the request: " + getClass().getSimpleName() + ", hash(" + hashCode() + ")");
-        }
         return object; // Return the actual object data on success
+    }
+
+    public void fillData(T object) {
+        this.object = object;
     }
 
     /**
