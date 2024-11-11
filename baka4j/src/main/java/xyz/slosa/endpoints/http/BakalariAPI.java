@@ -34,6 +34,16 @@ public class BakalariAPI {
         this.logger = logger;
     }
 
+    /**
+     * Sends an asynchronous HTTP GET request to the specified endpoint with the given access token.
+     * The response is logged and deserialized into the provided `AbstractBakaHttpRequest` object.
+     *
+     * @param <T> the type of the object that will hold the deserialized data
+     * @param <R> the type of the HTTP request extending `AbstractBakaHttpRequest`
+     * @param httpRequest the HTTP request object containing the endpoint and deserialization logic
+     * @param accessToken the access token for authorization header
+     * @return a `CompletableFuture` that completes with the deserialized request object `R`
+     */
     public <T extends BakaObject, R extends AbstractBakaHttpRequest<T>> CompletableFuture<R> request(final R httpRequest, final String accessToken) {
         assert logger != null : "Logger is NULL";
 
@@ -69,6 +79,14 @@ public class BakalariAPI {
         });
     }
 
+    /**
+     * Sends a POST request asynchronously using the provided HTTP request object and returns a CompletableFuture of the request object.
+     *
+     * @param <T> The type of the object that will hold the deserialized data.
+     * @param <R> The type of the HTTP request object which extends AbstractBakaHttpRequest.
+     * @param httpRequest The HTTP request object that includes endpoint information and data deserialization method.
+     * @return A CompletableFuture of the HTTP request object.
+     */
     public <T extends BakaObject, R extends AbstractBakaHttpRequest<T>> CompletableFuture<R> requestPost(final R httpRequest) {
         assert logger != null : "Logger is NULL";
 
