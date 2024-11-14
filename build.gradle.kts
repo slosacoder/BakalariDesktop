@@ -10,5 +10,11 @@ repositories {
 }
 
 dependencies {
+}
 
+// Force Java 21
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
 }
