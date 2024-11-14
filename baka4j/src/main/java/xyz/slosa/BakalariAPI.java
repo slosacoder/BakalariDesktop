@@ -1,15 +1,14 @@
 package xyz.slosa;
 
 import org.json.JSONObject;
-import xyz.slosa.endpoints.http.request.AbstractBakaHttpRequest;
+import xyz.slosa.endpoints.http.request.types.AbstractBakaHttpGETRequest;
+import xyz.slosa.endpoints.http.request.types.AbstractBakaHttpPOSTRequest;
 import xyz.slosa.objects.BakaObject;
 
 import java.net.URI;
-import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
@@ -45,7 +44,7 @@ public class BakalariAPI {
      * @param accessToken the access token for authorization header
      * @return a `CompletableFuture` that completes with the deserialized request object `R`
      */
-    public <T extends BakaObject, R extends AbstractBakaHttpRequest<T>> CompletableFuture<R> request(final R httpRequest, final String accessToken) {
+    public <T extends BakaObject, R extends AbstractBakaHttpGETRequest<T>> CompletableFuture<R> request(final R httpRequest, final String accessToken) {
         assert logger != null : "Logger is NULL";
 
         // Construct the full URL for the request
@@ -88,16 +87,14 @@ public class BakalariAPI {
      * @param httpRequest The HTTP request object that includes endpoint information and data deserialization method.
      * @return A CompletableFuture of the HTTP request object.
      */
-    public <T extends BakaObject, R extends AbstractBakaHttpRequest<T>> CompletableFuture<R> requestPost(final R httpRequest) {
+    public <T extends BakaObject, R extends AbstractBakaHttpPOSTRequest<T>> CompletableFuture<R> requestPost(final R httpRequest) {
         assert logger != null : "Logger is NULL";
 
         // Prepare the login URL
         final String loginUrl = String.format("%s/%s", schoolURL, httpRequest.getEndpoint());
 
-        // Prepare the form data for the request body (assuming this is for login)
-        final String requestBody = String.format("client_id=ANDR&grant_type=password&username=%s&password=%s",
-                URLEncoder.encode("skibidi", StandardCharsets.UTF_8),
-                URLEncoder.encode("test", StandardCharsets.UTF_8));
+        // Prepare the form data for the request body
+        final String requestBody = httpRequest.getRequestBody();
 
         // Create the POST request
         final HttpRequest request = HttpRequest

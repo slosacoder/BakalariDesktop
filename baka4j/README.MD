@@ -23,6 +23,51 @@ With Baka4J, the JSON serialization to Java objects is as seamless as slicing th
 - Reliable: Provides stable access to Bakalari’s API without frequent updates.
 - Developer-friendly: The codebase is designed for clarity and ease of use, following modern Java best practices. With nice documentation and sample code you can use the wrapper with ease!
 
-## Getting Started
+## Getting Started with Baka4J
 
-To get started with **Baka4J**, install the library using Maven or Gradle and refer to the usage examples in the documentation.
+To start using **Baka4J**, you’ll need to initialize the `BakalariAPI` with your school’s Bakalari API URL and a logger
+if desired. The example below demonstrates a basic login flow, which retrieves an access token by authenticating with a
+username and password.
+
+#### Asynchronous Design with CompletableFuture
+
+In **Baka4J**, all API requests are wrapped in `CompletableFuture` to enable easy, non-blocking asynchronous operations.
+The Bakalari API often requires multiple interactions, such as logging in, retrieving data, and performing updates,
+which can become time-consuming if done sequentially. Using `CompletableFuture` allows each request to be executed
+independently in the background, freeing up the main thread and improving application responsiveness.
+
+### Step 1: Add Baka4J as a Dependency
+
+Make sure you’ve added **Baka4J** to your project. Using Maven or Gradle (WIP)
+
+### Step 2: Sample Authentication
+
+This example demonstrates how to initialize `BakalariAPI`, authenticate using a username and password, and retrieve the
+access token asynchronously.
+
+```java
+        // Initialize BakalariAPI with the school URL and your logger output (System.out)
+BakalariAPI api = new BakalariAPI("https://yourschool.com", System.out::println);
+
+// Create a login request with the user's credentials
+LoginWithCredentialsBakaRequest loginRequest = new LoginWithCredentialsBakaRequest("username", "password");
+
+// Send the login request asynchronously and handle the response
+CompletableFuture<LoginWithCredentialsBakaRequest> futureResponse = api.requestPost(loginRequest);
+
+// Process the response 
+        futureResponse.
+
+thenAccept(response ->{
+LoginDataObject loginData = response.getData();
+            if(loginData !=null){
+        System.out.
+
+println("Login successful! Access token: "+loginData.token());
+        }else{
+        System.out.
+
+println("Login failed.");
+            }
+                    });
+```
