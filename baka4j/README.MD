@@ -46,7 +46,7 @@ This example demonstrates how to initialize `BakalariAPI`, authenticate using a 
 access token asynchronously.
 
 ```java
-        // Initialize BakalariAPI with the school URL and your logger output (System.out)
+// Initialize BakalariAPI with the school URL and your logger output (System.out)
 BakalariAPI api = new BakalariAPI("https://yourschool.com", System.out::println);
 
 // Create a login request with the user's credentials
@@ -56,18 +56,11 @@ LoginWithCredentialsBakaRequest loginRequest = new LoginWithCredentialsBakaReque
 CompletableFuture<LoginWithCredentialsBakaRequest> futureResponse = api.requestPost(loginRequest);
 
 // Process the response 
-        futureResponse.
-
-thenAccept(response ->{
-LoginDataObject loginData = response.getData();
-            if(loginData !=null){
-        System.out.
-
-println("Login successful! Access token: "+loginData.token());
-        }else{
-        System.out.
-
-println("Login failed.");
-            }
-                    });
-```
+futureResponse.thenAccept(response -> {
+    LoginDataObject loginData = response.getData();
+    if (loginData != null) {
+        System.out.println("Login successful! Access token: " + loginData.token());
+    } else {
+        System.out.println("Login failed.");
+    }
+});
