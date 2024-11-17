@@ -1,5 +1,4 @@
 import xyz.slosa.BakalariAPI;
-import xyz.slosa.endpoints.http.impl.login.LoginWithCredentialsBakaRequest;
 
 /**
  * @author slosa
@@ -8,7 +7,6 @@ import xyz.slosa.endpoints.http.impl.login.LoginWithCredentialsBakaRequest;
  **/
 public class Main {
     public static void main(String[] args) {
-        BakalariAPI api = new BakalariAPI("https://www.gymnaziumjihlava.cz:81/zak", System.out::println);
-        api.requestPost(new LoginWithCredentialsBakaRequest("test", "test"));
+        BakalariAPI api = new BakalariAPI("https://www.gymnaziumjihlava.cz:8081", System.out::println);
     }
 }

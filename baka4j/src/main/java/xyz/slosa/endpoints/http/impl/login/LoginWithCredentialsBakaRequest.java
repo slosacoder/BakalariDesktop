@@ -2,7 +2,7 @@ package xyz.slosa.endpoints.http.impl.login;
 
 import org.json.JSONObject;
 import xyz.slosa.endpoints.http.request.types.AbstractBakaHttpPOSTRequest;
-import xyz.slosa.objects.impl.LoginDataObject;
+import xyz.slosa.objects.impl.login.LoginDataObject;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;

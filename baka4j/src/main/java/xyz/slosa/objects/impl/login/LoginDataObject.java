@@ -1,4 +1,4 @@
-package xyz.slosa.objects.impl;
+package xyz.slosa.objects.impl.login;
 
 import xyz.slosa.objects.BakaObject;
 
