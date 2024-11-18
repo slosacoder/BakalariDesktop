@@ -4,6 +4,6 @@ import xyz.slosa.objects.BakaObject;
 
 import java.time.LocalDateTime;
 
-public record AbsenceDataObject(float threshold, LocalDateTime time,
-                                SubjectAbsenceData... subjectAbsences) implements BakaObject {
+public record AbsenceDataObject(float threshold, AbsenceData[] absenceData,
+                                SubjectAbsenceData[] subjectAbsences) implements BakaObject {
 }
