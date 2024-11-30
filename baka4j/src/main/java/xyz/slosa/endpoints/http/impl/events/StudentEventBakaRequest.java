@@ -18,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 public class StudentEventBakaRequest extends AbstractBakaHttpGETRequest<EventDetailsObject> {
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 
     /**
      * Constructs a request to retrieve events data.
@@ -55,8 +56,8 @@ public class StudentEventBakaRequest extends AbstractBakaHttpGETRequest<EventDet
                 final JSONObject timeObj = timesArray.optJSONObject(j);
                 times[j] = new EventData(
                         timeObj.optBoolean("WholeDay"),
-                        LocalDateTime.parse(timeObj.optString("StartTime"), DateTimeFormatter.ISO_OFFSET_DATE_TIME),
-                        LocalDateTime.parse(timeObj.optString("EndTime"), DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+                        LocalDateTime.parse(timeObj.optString("StartTime"), DATE_TIME_FORMATTER),
+                        LocalDateTime.parse(timeObj.optString("EndTime"), DATE_TIME_FORMATTER)
                 );
             }
 
