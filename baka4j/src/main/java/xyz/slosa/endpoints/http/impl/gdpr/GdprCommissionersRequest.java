@@ -27,15 +27,15 @@ public class GdprCommissionersRequest extends AbstractBakaHttpGETRequest<GdprCom
      * @return a <code>GdprCommissionersObject</code> containing the array of commissioners
      */
     @Override
-    public GdprCommissionersObject deserialize(JSONObject jsonObject) {
-        JSONArray commissionersArray = jsonObject.optJSONArray("Commissioners");
+    public GdprCommissionersObject deserialize(final JSONObject jsonObject) {
+        final JSONArray commissionersArray = jsonObject.optJSONArray("Commissioners");
 
         // Early exit if no commissioners are present
         if (commissionersArray == null || commissionersArray.length() == 0) {
             return new GdprCommissionersObject(new GdprCommissioner[0]);
         }
 
-        GdprCommissioner[] commissioners = new GdprCommissioner[commissionersArray.length()];
+        final GdprCommissioner[] commissioners = new GdprCommissioner[commissionersArray.length()];
         for (int i = 0; i < commissionersArray.length(); i++) {
             JSONObject commissionerObj = commissionersArray.optJSONObject(i);
             commissioners[i] = new GdprCommissioner(
