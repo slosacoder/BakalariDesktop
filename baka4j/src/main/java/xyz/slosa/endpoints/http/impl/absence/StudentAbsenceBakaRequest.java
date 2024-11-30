@@ -9,8 +9,6 @@ import xyz.slosa.objects.impl.absence.SubjectAbsenceData;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Handles the HTTP GET request for retrieving a student's absence data from the API.
@@ -69,7 +67,7 @@ public class StudentAbsenceBakaRequest extends AbstractBakaHttpGETRequest<Absenc
      * @return an <code>AbsenceDataObject</code> representing the absence details
      */
     @Override
-    public AbsenceDataObject deserialize(JSONObject jsonObject) {
+    public AbsenceDataObject deserialize(final JSONObject jsonObject) {
         // Deserialize PercentageThreshold
         final float percentageThreshold = (float) jsonObject.optDouble("PercentageThreshold");
 
