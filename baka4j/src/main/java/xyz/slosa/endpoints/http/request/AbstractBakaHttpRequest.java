@@ -1,7 +1,15 @@
 package xyz.slosa.endpoints.http.request;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import org.json.JSONObject;
 import xyz.slosa.objects.BakaObject;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Abstract base class for handling HTTP requests to the Bakalari API.
@@ -29,7 +37,10 @@ public abstract class AbstractBakaHttpRequest<T extends BakaObject> {
      * @param jsonObject the JSON object containing the data to be deserialized
      * @return the deserialized object of type O
      */
+    @Deprecated
     public abstract T deserialize(final JSONObject jsonObject);
+    
+    public abstract T deserialize(final String json) throws JsonProcessingException;
 
     /**
      * Returns the deserialized object data, if it exists.
@@ -54,5 +65,13 @@ public abstract class AbstractBakaHttpRequest<T extends BakaObject> {
      */
     public String getEndpoint() {
         return endpoint;
+    }
+    
+    protected ObjectMapper getDeserializer() {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule().addDeserializer(LocalDateTime.class,
+                new LocalDateTimeDeserializer(DateTimeFormatter.ISO_OFFSET_DATE_TIME)));
+        mapper.setPropertyNamingStrategy(PropertyNamingStrategies.UPPER_CAMEL_CASE);
+        return mapper;
     }
 }

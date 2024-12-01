@@ -1,11 +1,13 @@
 package xyz.slosa.endpoints.http.impl.absence;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import xyz.slosa.endpoints.http.request.types.AbstractBakaHttpGETRequest;
 import xyz.slosa.objects.impl.absence.AbsenceData;
 import xyz.slosa.objects.impl.absence.AbsenceDataObject;
 import xyz.slosa.objects.impl.absence.SubjectAbsenceData;
+import xyz.slosa.objects.impl.gdpr.GdprCommissionersObject;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -19,7 +21,7 @@ import java.time.format.DateTimeFormatter;
  *
  * <p><b>Response Structure:</b></p>
  * <ul>
- *     <li><b>PercentageThreshold</b> - The threshold percentage for absence (e.g., 0.18)</li>
+ *     <li><b>PercentageThreshold</b> - The percentageThreshold percentage for absence (e.g., 0.18)</li>
  *     <li><b>Absences</b> - List of absence records for the student, including details for each day:</li>
  *     <ul>
  *         <li><b>Date</b> - The date of absence (e.g., "2020-02-30T00:00:00+01:00")</li>
@@ -108,5 +110,10 @@ public class StudentAbsenceBakaRequest extends AbstractBakaHttpGETRequest<Absenc
 
         // Create and return the AbsenceDataObject
         return new AbsenceDataObject(percentageThreshold, absenceData, subjectAbsenceData);
+    }
+
+    @Override
+    public AbsenceDataObject deserialize(String json) throws JsonProcessingException {
+        return getDeserializer().readValue(json, AbsenceDataObject.class);
     }
 }

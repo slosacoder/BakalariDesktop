@@ -20,5 +20,4 @@ public abstract class AbstractBakaHttpGETRequest<T extends BakaObject> extends A
     public AbstractBakaHttpGETRequest(final String endpoint) {
         super(endpoint);
     }
-
 }

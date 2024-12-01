@@ -1,7 +1,10 @@
 package xyz.slosa.endpoints.http.impl.login;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.json.JSONObject;
 import xyz.slosa.endpoints.http.request.types.AbstractBakaHttpPOSTRequest;
+import xyz.slosa.objects.impl.absence.AbsenceDataObject;
 import xyz.slosa.objects.impl.login.LoginDataObject;
 
 import java.net.URLEncoder;
@@ -68,6 +71,12 @@ public class LoginWithCredentialsBakaRequest extends AbstractBakaHttpPOSTRequest
     @Override
     public LoginDataObject deserialize(final JSONObject jsonObject) {
         final String accessToken = jsonObject.optString("access_token"); // Main thing we want is the access token
+        return new LoginDataObject(login, password, accessToken);
+    }
+
+    @Override
+    public LoginDataObject deserialize(String json) throws JsonProcessingException {
+        final String accessToken = getDeserializer().readValue(json, JsonNode.class).get("access_token").asText();
         return new LoginDataObject(login, password, accessToken);
     }
 }

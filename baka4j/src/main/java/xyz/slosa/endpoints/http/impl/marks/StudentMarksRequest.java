@@ -1,8 +1,11 @@
 package xyz.slosa.endpoints.http.impl.marks;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import xyz.slosa.endpoints.http.request.types.AbstractBakaHttpGETRequest;
+import xyz.slosa.objects.impl.event.EventDetailsObject;
 import xyz.slosa.objects.impl.marks.Mark;
 import xyz.slosa.objects.impl.marks.MarksObject;
 import xyz.slosa.objects.impl.marks.Subject;
@@ -89,6 +92,11 @@ public class StudentMarksRequest extends AbstractBakaHttpGETRequest<MarksObject>
         }
 
         return new MarksObject(subjectMarksArray);
+    }
+
+    @Override
+    public MarksObject deserialize(String json) throws JsonProcessingException {
+        return getDeserializer().readValue(json, MarksObject.class);
     }
 }
 

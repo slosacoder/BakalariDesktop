@@ -1,8 +1,10 @@
 package xyz.slosa.endpoints.http.impl.events;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import xyz.slosa.endpoints.http.request.types.AbstractBakaHttpGETRequest;
+import xyz.slosa.objects.impl.absence.AbsenceDataObject;
 import xyz.slosa.objects.impl.event.EventData;
 import xyz.slosa.objects.impl.event.EventDetails;
 import xyz.slosa.objects.impl.event.EventDetailsObject;
@@ -72,6 +74,11 @@ public class StudentEventBakaRequest extends AbstractBakaHttpGETRequest<EventDet
         }
 
         return new EventDetailsObject(events);
+    }
+
+    @Override
+    public EventDetailsObject deserialize(String json) throws JsonProcessingException {
+        return getDeserializer().readValue(json, EventDetailsObject.class);
     }
 
     /**
