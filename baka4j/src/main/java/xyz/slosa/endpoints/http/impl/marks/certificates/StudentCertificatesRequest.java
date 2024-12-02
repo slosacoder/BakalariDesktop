@@ -1,8 +1,10 @@
 package xyz.slosa.endpoints.http.impl.marks.certificates;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import xyz.slosa.endpoints.http.request.types.AbstractBakaHttpGETRequest;
+import xyz.slosa.objects.impl.event.EventDetailsObject;
 import xyz.slosa.objects.impl.marks.Subject;
 import xyz.slosa.objects.impl.marks.certificates.CertificateTerm;
 import xyz.slosa.objects.impl.marks.certificates.CertificatesObject;
@@ -93,5 +95,10 @@ public class StudentCertificatesRequest extends AbstractBakaHttpGETRequest<Certi
         }
 
         return new CertificatesObject(certificateTerms);
+    }
+
+    @Override
+    public CertificatesObject deserialize(String json) throws JsonProcessingException {
+        return getDeserializer().readValue(json, CertificatesObject.class);
     }
 }

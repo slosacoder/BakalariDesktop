@@ -1,6 +1,8 @@
 package xyz.slosa;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.JSONObject;
+import xyz.slosa.endpoints.http.impl.gdpr.GdprCommissionersRequest;
 import xyz.slosa.endpoints.http.request.types.AbstractBakaHttpGETRequest;
 import xyz.slosa.endpoints.http.request.types.AbstractBakaHttpPOSTRequest;
 import xyz.slosa.objects.BakaObject;
@@ -70,7 +72,11 @@ public class BakalariAPI {
                 logger.accept("Response: " + response.body());
             }
             // Deserialize the response body into the request object
-            httpRequest.fillData(httpRequest.deserialize(new JSONObject(response.body())));
+            try {
+                httpRequest.fillData(httpRequest.deserialize(response.body()));
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
             return httpRequest; // Return the request
         }).exceptionally(ex -> {
             // Handle any exceptions that occurred during the request

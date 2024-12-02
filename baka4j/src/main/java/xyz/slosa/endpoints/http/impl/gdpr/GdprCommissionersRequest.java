@@ -1,10 +1,13 @@
 package xyz.slosa.endpoints.http.impl.gdpr;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import xyz.slosa.endpoints.http.request.types.AbstractBakaHttpGETRequest;
 import xyz.slosa.objects.impl.gdpr.GdprCommissioner;
 import xyz.slosa.objects.impl.gdpr.GdprCommissionersObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Handles the HTTP GET request for retrieving GDPR commissioners data from the API.
@@ -50,5 +53,10 @@ public class GdprCommissionersRequest extends AbstractBakaHttpGETRequest<GdprCom
         }
 
         return new GdprCommissionersObject(commissioners);
+    }
+
+    @Override
+    public GdprCommissionersObject deserialize(String json) throws JsonProcessingException {
+        return getDeserializer().readValue(json, GdprCommissionersObject.class);
     }
 }

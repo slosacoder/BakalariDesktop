@@ -1,7 +1,6 @@
 import xyz.slosa.BakalariAPI;
 import xyz.slosa.endpoints.http.impl.absence.StudentAbsenceBakaRequest;
 import xyz.slosa.endpoints.http.impl.login.LoginWithCredentialsBakaRequest;
-import xyz.slosa.objects.impl.absence.AbsenceData;
 import xyz.slosa.objects.impl.absence.AbsenceDataObject;
 import xyz.slosa.objects.impl.absence.SubjectAbsenceData;
 import xyz.slosa.objects.impl.login.LoginDataObject;
@@ -19,11 +18,11 @@ public class Main {
 
         final AbsenceDataObject data = api.request(new StudentAbsenceBakaRequest(), token).join().getData();
 
-        final SubjectAbsenceData[] subjectAbsenceData = data.subjectAbsences();
+        final SubjectAbsenceData[] subjectAbsenceData = data.absencesPerSubject();
 
         for (SubjectAbsenceData subjectAbsenceData1 : subjectAbsenceData) {
-            System.out.println("name: " + subjectAbsenceData1.name());
-            System.out.println("lessons: " +subjectAbsenceData1.lessonCount() + " missed: " + subjectAbsenceData1.base());
+            System.out.println("name: " + subjectAbsenceData1.subjectName());
+            System.out.println("lessons: " +subjectAbsenceData1.lessonsCount() + " missed: " + subjectAbsenceData1.base());
             System.out.println("------------");
         }
     }

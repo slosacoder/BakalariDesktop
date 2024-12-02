@@ -1,5 +1,6 @@
 package xyz.slosa.endpoints.http.impl.measures;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import xyz.slosa.endpoints.http.request.types.AbstractBakaHttpGETRequest;
@@ -56,5 +57,10 @@ public class PedagogicalMeasuresBakaRequest extends AbstractBakaHttpGETRequest<P
         }
 
         return new PedagogicalMeasuresObject(measures);
+    }
+
+    @Override
+    public PedagogicalMeasuresObject deserialize(String json) throws JsonProcessingException {
+        return getDeserializer().readValue(json, PedagogicalMeasuresObject.class);
     }
 }
