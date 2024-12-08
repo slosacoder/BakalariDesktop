@@ -1,12 +1,7 @@
 package xyz.slosa.endpoints.http.impl.events;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import xyz.slosa.endpoints.http.request.types.AbstractBakaHttpGETRequest;
-import xyz.slosa.objects.impl.absence.AbsenceDataObject;
-import xyz.slosa.objects.impl.event.EventData;
-import xyz.slosa.objects.impl.event.EventDetails;
 import xyz.slosa.objects.impl.event.EventDetailsObject;
 
 import java.time.LocalDateTime;
@@ -35,50 +30,12 @@ public class StudentEventBakaRequest extends AbstractBakaHttpGETRequest<EventDet
     /**
      * Deserializes the JSON response into an <code>EventsResponse</code>.
      *
-     * @param jsonObject the JSON response object containing the events data
-     * @return an <code>EventsResponse</code> containing the array of events
+     * @param json the JSON response object containing the events data
+     * @return an <code>EventDetailsObject</code> containing the array of events
      */
     @Override
-    public EventDetailsObject deserialize(final JSONObject jsonObject) {
-        final JSONArray eventsArray = jsonObject.optJSONArray("Events");
-
-        // Early exit if no events are present
-        if (eventsArray == null || eventsArray.length() == 0) {
-            return new EventDetailsObject(new EventDetails[0]);
-        }
-
-        final EventDetails[] events = new EventDetails[eventsArray.length()];
-
-        for (int i = 0; i < eventsArray.length(); i++) {
-            final JSONObject eventObj = eventsArray.optJSONObject(i);
-
-            final JSONArray timesArray = eventObj.optJSONArray("Times");
-            final EventData[] times = new EventData[timesArray != null ? timesArray.length() : 0];
-            for (int j = 0; j < times.length; j++) {
-                final JSONObject timeObj = timesArray.optJSONObject(j);
-                times[j] = new EventData(
-                        timeObj.optBoolean("WholeDay"),
-                        LocalDateTime.parse(timeObj.optString("StartTime"), DATE_TIME_FORMATTER),
-                        LocalDateTime.parse(timeObj.optString("EndTime"), DATE_TIME_FORMATTER)
-                );
-            }
-
-            events[i] = new EventDetails(
-                    eventObj.optString("Id"),
-                    eventObj.optString("Title"),
-                    eventObj.optString("Description"),
-                    times,
-                    eventObj.optJSONObject("EventType").optString("Name"),
-                    eventObj.optString("DateChanged")
-            );
-        }
-
-        return new EventDetailsObject(events);
-    }
-
-    @Override
-    public EventDetailsObject deserialize(String json) throws JsonProcessingException {
-        return getDeserializer().readValue(json, EventDetailsObject.class);
+    public EventDetailsObject deserialize(final String json) throws JsonProcessingException {
+        return deserializer().readValue(json, EventDetailsObject.class);
     }
 
     /**

@@ -1,16 +1,8 @@
 package xyz.slosa.endpoints.http.impl.absence;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import xyz.slosa.endpoints.http.request.types.AbstractBakaHttpGETRequest;
-import xyz.slosa.objects.impl.absence.AbsenceData;
 import xyz.slosa.objects.impl.absence.AbsenceDataObject;
-import xyz.slosa.objects.impl.absence.SubjectAbsenceData;
-import xyz.slosa.objects.impl.gdpr.GdprCommissionersObject;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  * Handles the HTTP GET request for retrieving a student's absence data from the API.
@@ -52,8 +44,6 @@ import java.time.format.DateTimeFormatter;
  */
 public class StudentAbsenceBakaRequest extends AbstractBakaHttpGETRequest<AbsenceDataObject> {
 
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
-
     /**
      * Constructs a request to retrieve the student's absence data.
      * The access token should be provided in the request header as <code>Authorization: Bearer ACCESS_TOKEN</code>.
@@ -65,55 +55,11 @@ public class StudentAbsenceBakaRequest extends AbstractBakaHttpGETRequest<Absenc
     /**
      * Deserializes the JSON response into an <code>AbsenceDataObject</code>.
      *
-     * @param jsonObject the JSON response object containing the absence data
+     * @param json the JSON response object containing the absence data
      * @return an <code>AbsenceDataObject</code> representing the absence details
      */
     @Override
-    public AbsenceDataObject deserialize(final JSONObject jsonObject) {
-        // Deserialize PercentageThreshold
-        final float percentageThreshold = (float) jsonObject.optDouble("PercentageThreshold");
-
-        // Deserialize Absences array
-        final JSONArray absences = jsonObject.optJSONArray("Absences");
-
-        final AbsenceData[] absenceData = new AbsenceData[absences.length()];
-        for (int i = 0; i < absences.length(); i++) {
-            final JSONObject obj = absences.optJSONObject(i);
-            absenceData[i] = new AbsenceData(
-                    LocalDateTime.parse(obj.optString("Date"), DATE_TIME_FORMATTER),
-                    obj.optInt("Unsolved"),
-                    obj.optInt("Ok"),
-                    obj.optInt("Missed"),
-                    obj.optInt("Late"),
-                    obj.optInt("Soon"),
-                    obj.optInt("School"),
-                    obj.optInt("DistanceTeaching")
-            );
-        }
-
-        // Deserialize AbsencesPerSubject array
-        JSONArray subjectAbsencesArray = jsonObject.optJSONArray("AbsencesPerSubject");
-
-        SubjectAbsenceData[] subjectAbsenceData = new SubjectAbsenceData[subjectAbsencesArray.length()];
-        for (int i = 0; i < subjectAbsencesArray.length(); i++) {
-            JSONObject obj = subjectAbsencesArray.optJSONObject(i);
-            subjectAbsenceData[i] = new SubjectAbsenceData(
-                    obj.optString("SubjectName"),
-                    obj.optInt("LessonsCount"),
-                    obj.optInt("Base"),
-                    obj.optInt("Late"),
-                    obj.optInt("Soon"),
-                    obj.optInt("School"),
-                    obj.optInt("DistanceTeaching")
-            );
-        }
-
-        // Create and return the AbsenceDataObject
-        return new AbsenceDataObject(percentageThreshold, absenceData, subjectAbsenceData);
-    }
-
-    @Override
-    public AbsenceDataObject deserialize(String json) throws JsonProcessingException {
-        return getDeserializer().readValue(json, AbsenceDataObject.class);
+    public AbsenceDataObject deserialize(final String json) throws JsonProcessingException {
+        return deserializer().readValue(json, AbsenceDataObject.class);
     }
 }

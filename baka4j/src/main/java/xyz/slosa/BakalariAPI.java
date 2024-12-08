@@ -1,8 +1,6 @@
 package xyz.slosa;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.json.JSONObject;
-import xyz.slosa.endpoints.http.impl.gdpr.GdprCommissionersRequest;
 import xyz.slosa.endpoints.http.request.types.AbstractBakaHttpGETRequest;
 import xyz.slosa.endpoints.http.request.types.AbstractBakaHttpPOSTRequest;
 import xyz.slosa.objects.BakaObject;
@@ -40,8 +38,8 @@ public class BakalariAPI {
      * Sends an asynchronous HTTP GET request to the specified endpoint with the given access token.
      * The response is logged and deserialized into the provided `AbstractBakaHttpRequest` object.
      *
-     * @param <T> the type of the object that will hold the deserialized data
-     * @param <R> the type of the HTTP request extending `AbstractBakaHttpRequest`
+     * @param <T>         the type of the object that will hold the deserialized data
+     * @param <R>         the type of the HTTP request extending `AbstractBakaHttpRequest`
      * @param httpRequest the HTTP request object containing the endpoint and deserialization logic
      * @param accessToken the access token for authorization header
      * @return a `CompletableFuture` that completes with the deserialized request object `R`
@@ -88,8 +86,8 @@ public class BakalariAPI {
     /**
      * Sends a POST request asynchronously using the provided HTTP request object and returns a CompletableFuture of the request object.
      *
-     * @param <T> The type of the object that will hold the deserialized data.
-     * @param <R> The type of the HTTP request object which extends AbstractBakaHttpRequest.
+     * @param <T>         The type of the object that will hold the deserialized data.
+     * @param <R>         The type of the HTTP request object which extends AbstractBakaHttpRequest.
      * @param httpRequest The HTTP request object that includes endpoint information and data deserialization method.
      * @return A CompletableFuture of the HTTP request object.
      */
@@ -121,7 +119,11 @@ public class BakalariAPI {
                 logger.accept("Response: " + response.body());
             }
             // Deserialize the response body into the request object
-            httpRequest.fillData(httpRequest.deserialize(new JSONObject(response.body())));
+            try {
+                httpRequest.fillData(httpRequest.deserialize(response.body()));
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
             return httpRequest; // Return the request
         }).exceptionally(ex -> {
             // Handle any exceptions that occurred during the request
