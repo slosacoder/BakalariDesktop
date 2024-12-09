@@ -10,7 +10,7 @@ import xyz.slosa.window.Window;
  * @created 03.11.24, Sunday
  * CC BakalariDesktop's contributors, use according to the license!
  **/
-public class Client {
+public class BakalariDesktopClient {
 
     // App version
     private static final BakalariDesktopVersion VERSION = new BakalariDesktopVersion();

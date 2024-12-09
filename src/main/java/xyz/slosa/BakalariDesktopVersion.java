@@ -3,8 +3,9 @@ package xyz.slosa;
 public final class BakalariDesktopVersion {
     private final String title; // Display window title
     private final String semanticVersion, branch, commitSHA;
-    BakalariDesktopVersion() {
-        final Package manifest = Client.class.getPackage();
+
+    public BakalariDesktopVersion() {
+        final Package manifest = BakalariDesktopClient.class.getPackage();
         final String versionString = manifest.getImplementationVersion(); // 0.0.0-000000-main
 
         // Running from IDE

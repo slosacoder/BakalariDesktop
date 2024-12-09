@@ -12,11 +12,12 @@ import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
 public class Window {
-
-    public String title;
-    public int width, height;
+    // Basic variables for tracking
+    private final String title;
+    private int width, height;
     private final long windowPointer;
-
+    // Window Events
+    private final WindowEventHandler windowEventHandler;
 
     public Window(final String title, final int width, final int height) {
         this.title = title;
@@ -64,6 +65,9 @@ public class Window {
 
         // Make the window visible
         glfwShowWindow(windowPointer);
+
+        // Create window Events
+        windowEventHandler = new WindowEventHandler(this);
     }
 
 
@@ -71,16 +75,12 @@ public class Window {
         return windowPointer;
     }
 
-    public int getHeight() {
-        return height;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
     public String getTitle() {
         return title;
+    }
+
+    public WindowEventHandler getWindowEventHandler() {
+        return windowEventHandler;
     }
 
     public void loop(final Runnable execution) {
