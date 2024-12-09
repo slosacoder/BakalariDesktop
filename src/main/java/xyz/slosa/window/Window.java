@@ -1,11 +1,13 @@
 package xyz.slosa.window;
 
 import org.lwjgl.glfw.*;
+import org.lwjgl.opengl.GL;
 import org.lwjgl.system.*;
 
 import java.nio.*;
 
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
@@ -79,5 +81,29 @@ public class Window {
 
     public String getTitle() {
         return title;
+    }
+
+    public void loop(final Runnable execution) {
+        // This line is critical for LWJGL's interoperation with GLFW's
+        // OpenGL context, or any context that is managed externally.
+        // LWJGL detects the context that is current in the current thread,
+        // creates the GLCapabilities instance and makes the OpenGL
+        // bindings available for use.
+        GL.createCapabilities();
+
+        // Set the clear color
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+        // Run the rendering loop until the user has attempted to close
+        while ( !glfwWindowShouldClose(windowPointer) ) {
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
+            // Do the actual drawing
+            execution.run();
+            glfwSwapBuffers(windowPointer); // swap the color buffers
+
+            // Poll for window events. The key callback above will only be
+            // invoked during this call.
+            glfwPollEvents();
+        }
     }
 }

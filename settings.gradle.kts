@@ -1,2 +1,2 @@
 rootProject.name = "BakalariDesktop"
-include("baka4j")
+include("src", "baka4j")

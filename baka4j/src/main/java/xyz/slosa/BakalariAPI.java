@@ -20,7 +20,7 @@ public class BakalariAPI {
 
     private final String schoolURL;
     private static final String CONTENT_TYPE = "application/x-www-form-urlencoded";
-    private final Consumer<String> logger;
+    private final Consumer<String> logger, errorLogger;
     private final HttpClient client = HttpClient.newHttpClient();
 
     /**
@@ -29,9 +29,10 @@ public class BakalariAPI {
      * @param schoolURL the base URL of the school Bakalari API
      * @param logger    a Consumer that logs messages (can be null for non-debug purposes)
      */
-    public BakalariAPI(final String schoolURL, final Consumer<String> logger) {
+    public BakalariAPI(final String schoolURL, final Consumer<String> logger, final Consumer<String> errorLogger) {
         this.schoolURL = schoolURL;
         this.logger = logger;
+        this.errorLogger = errorLogger;
     }
 
     /**
@@ -66,19 +67,19 @@ public class BakalariAPI {
                 logger.accept("Successfully received response: " + response.body());
             } else {
                 // On failure, log the status code and body of the response
-                logger.accept("Response failed: " + response.statusCode());
-                logger.accept("Response: " + response.body());
+                errorLogger.accept("Response failed: " + response.statusCode());
+                errorLogger.accept("Response: " + response.body());
             }
             // Deserialize the response body into the request object
             try {
                 httpRequest.fillData(httpRequest.deserialize(response.body()));
             } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
+                errorLogger.accept("Response failed with exception: " + e.getMessage());
             }
             return httpRequest; // Return the request
         }).exceptionally(ex -> {
             // Handle any exceptions that occurred during the request
-            logger.accept("Request failed with exception: " + ex.getMessage());
+            errorLogger.accept("Request failed with exception: " + ex.getMessage());
             return httpRequest;
         });
     }
@@ -115,19 +116,19 @@ public class BakalariAPI {
                 logger.accept("Successfully received response: " + response.body());
             } else {
                 // On failure, log the status code and body of the response
-                logger.accept("Response failed: " + response.statusCode());
-                logger.accept("Response: " + response.body());
+                errorLogger.accept("Response failed: " + response.statusCode());
+                errorLogger.accept("Response: " + response.body());
             }
             // Deserialize the response body into the request object
             try {
                 httpRequest.fillData(httpRequest.deserialize(response.body()));
             } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
+                errorLogger.accept("Response failed with exception: " + e.getMessage());
             }
             return httpRequest; // Return the request
         }).exceptionally(ex -> {
             // Handle any exceptions that occurred during the request
-            logger.accept("Request failed with exception: " + ex.getMessage());
+            errorLogger.accept("Request failed with exception: " + ex.getMessage());
             return httpRequest;
         });
     }

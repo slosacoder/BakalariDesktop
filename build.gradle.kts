@@ -63,15 +63,21 @@ repositories {
 }
 
 dependencies {
+    // LWJGL
     implementation(platform("org.lwjgl:lwjgl-bom:$lwjglVersion"))
-
     implementation("org.lwjgl", "lwjgl")
     implementation("org.lwjgl", "lwjgl-glfw")
     implementation("org.lwjgl", "lwjgl-opengl")
     runtimeOnly("org.lwjgl", "lwjgl", classifier = lwjglNatives)
     runtimeOnly("org.lwjgl", "lwjgl-glfw", classifier = lwjglNatives)
     runtimeOnly("org.lwjgl", "lwjgl-opengl", classifier = lwjglNatives)
+    // Skija
     implementation("io.github.humbleui:${skijaNatives}:${skijaVersion}")
+    // Logging
+    implementation("org.tinylog:tinylog-api:2.7.0")
+    implementation("org.tinylog:tinylog-impl:2.7.0")
+    // Baka4J
+    implementation(project(":baka4j"))
 }
 
 // Force Java 21
