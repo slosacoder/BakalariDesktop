@@ -23,5 +23,9 @@ public class BakalariDesktopClient {
     private static final BakalariAPI BAKALARI_API = new BakalariAPI(null, BAKA4J_LOGGER::info, BAKA4J_LOGGER::error);
 
     public static void main(String[] args) {
+        // Startup logic...
+        LOGGER.info("Starting... {}", VERSION);
+        // Trying to create window
+        LOGGER.warn("Trying to create window...");
     }
 }

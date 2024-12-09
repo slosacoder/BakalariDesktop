@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.system.*;
 
 import java.nio.*;
+import java.util.function.Consumer;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -14,19 +15,16 @@ import static org.lwjgl.system.MemoryUtil.*;
 public class Window {
     // Basic variables for tracking
     private final String title;
-    private int width, height;
     private final long windowPointer;
     // Window Events
     private final WindowEventHandler windowEventHandler;
 
-    public Window(final String title, final int width, final int height) {
-        this.title = title;
-        this.width = width;
-        this.height = height;
+    public Window(final String title, final Consumer<String> errorLogger, final int width, final int height) {
+        this.title = title;;
 
         // Initialize GLFW. Most GLFW functions will not work before doing this.
         if ( !glfwInit() )
-            throw new IllegalStateException("Unable to initialize GLFW");
+             throw new IllegalStateException("Unable to initialize GLFW");
 
         // Configure GLFW
         glfwDefaultWindowHints(); // optional, the current window hints are already the default
