@@ -1,7 +1,7 @@
 package xyz.slosa;
 
 public final class BakalariDesktopVersion {
-    private final String title; // Display window title
+    private final String title, version; // Display window title
     private final String semanticVersion, branch, commitSHA;
 
     public BakalariDesktopVersion() {
@@ -9,7 +9,6 @@ public final class BakalariDesktopVersion {
         final String versionString = manifest.getImplementationVersion(); // 0.0.0-000000-main
 
         // Running from IDE
-
         if (versionString == null) {
             semanticVersion = "internal";
             commitSHA = "unknown";
@@ -20,12 +19,17 @@ public final class BakalariDesktopVersion {
             branch = versionString.split("-")[2];
         }
 
+        this.version = String.format("%s-%s", semanticVersion, commitSHA);
         this.title = String.format("BakalariDesktop (%s-%s/%s-%s)",
                 semanticVersion, commitSHA, System.getProperty("os.name").toLowerCase(), branch);
     }
 
     @Override
     public String toString() {
+        return version;
+    }
+
+    public String getTitle() {
         return title;
     }
 }

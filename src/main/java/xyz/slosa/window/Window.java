@@ -1,16 +1,16 @@
 package xyz.slosa.window;
 
-import org.lwjgl.glfw.*;
+import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
-import org.lwjgl.system.*;
+import org.lwjgl.system.MemoryStack;
+import xyz.slosa.BakalariDesktopClient;
 
-import java.nio.*;
-import java.util.function.Consumer;
+import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.system.MemoryStack.*;
-import static org.lwjgl.system.MemoryUtil.*;
+import static org.lwjgl.system.MemoryStack.stackPush;
+import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class Window {
     // Basic variables for tracking
@@ -19,8 +19,8 @@ public class Window {
     // Window Events
     private final WindowEventHandler windowEventHandler;
 
-    public Window(final String title, final Consumer<String> errorLogger, final int width, final int height) {
-        this.title = title;;
+    public Window(final String title, final int width, final int height) {
+        this.title = title;
 
         // Initialize GLFW. Most GLFW functions will not work before doing this.
         if ( !glfwInit() )
@@ -34,7 +34,7 @@ public class Window {
         // Create the window
         windowPointer = glfwCreateWindow(width, height, title, NULL, NULL);
         if (windowPointer == NULL)
-            throw new RuntimeException("Failed to create the GLFW window");
+            BakalariDesktopClient.LOGGER.error("Unable to create the GLFW window", new RuntimeException());
 
 
         // Get the thread stack and push a new frame

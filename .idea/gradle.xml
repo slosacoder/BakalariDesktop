@@ -12,6 +12,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/baka4j" />
+            <option value="$PROJECT_DIR$/src" />
           </set>
         </option>
       </GradleProjectSettings>
