@@ -3,7 +3,6 @@ package xyz.slosa.window;
 import static org.lwjgl.glfw.GLFW.*;
 
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 public class WindowEventHandler {
     private final Window window;
@@ -19,10 +18,12 @@ public class WindowEventHandler {
             resizeAction.accept(resizedWidth, resizedHeight);
         });
     }
-    public void close(final Consumer<Void> closeAction) {
-        glfwSetWindowCloseCallback(window.getWindowPointer(), (window) -> {
-            closeAction.accept(null);  // Close action doesn't need parameters
+
+    // Mouse move event
+    public void mouseMove(final BiConsumer<Double, Double> mouseMoveAction) {
+        glfwSetCursorPosCallback(window.getWindowPointer(), (pointer, xpos, ypos) -> {
+            // Execute the provided action with the new mouse coordinates
+            mouseMoveAction.accept(xpos, ypos);
         });
     }
-
 }

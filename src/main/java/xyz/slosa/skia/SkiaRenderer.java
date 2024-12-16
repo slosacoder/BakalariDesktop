@@ -1,11 +1,14 @@
 package xyz.slosa.skia;
 
 import io.github.humbleui.skija.*;
+import xyz.slosa.window.WindowEventHandler;
+
 import java.util.function.Consumer;
 
 import static io.github.humbleui.skija.FramebufferFormat.GR_GL_RGBA8;
 import static io.github.humbleui.skija.SurfaceColorFormat.RGBA_8888;
 import static io.github.humbleui.skija.SurfaceOrigin.BOTTOM_LEFT;
+import static xyz.slosa.BakalariDesktopClient.*;
 
 
 public class SkiaRenderer {
@@ -22,10 +25,13 @@ public class SkiaRenderer {
     // Backend render target using OpenGL
     private BackendRenderTarget renderTarget;
 
-
-    public SkiaRenderer() {
+    public SkiaRenderer(final WindowEventHandler windowEventHandler) {
         // Create a new DirectContext for OpenGL, note: needs to be initialized after OpenGL context is created
         context = DirectContext.makeGL();
+        // Initial resize
+        resizeSurface(WIDTH, HEIGHT);
+        // Hook resizing
+        windowEventHandler.resize(this::resizeSurface);
     }
 
 
