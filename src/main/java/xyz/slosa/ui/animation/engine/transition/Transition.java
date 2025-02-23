@@ -1,6 +1,6 @@
 package xyz.slosa.ui.animation.engine.transition;
 
-import xyz.slosa.util.SystemTimer;
+import xyz.slosa.ui.animation.engine.SystemTimer;
 
 public abstract class Transition {
     protected final double expectedEndResult;

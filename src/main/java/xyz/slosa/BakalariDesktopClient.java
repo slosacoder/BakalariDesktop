@@ -4,6 +4,7 @@ package xyz.slosa;
 import org.tinylog.Logger;
 import org.tinylog.TaggedLogger;
 import xyz.slosa.skia.SkiaRenderer;
+import xyz.slosa.ui.scene.scenes.LoginScene;
 import xyz.slosa.window.Window;
 
 /**
@@ -24,18 +25,17 @@ public class BakalariDesktopClient {
     public static final TaggedLogger BAKA4J_LOGGER = Logger.tag("Baka4J");
     // Skia Renderer
     private static final SkiaRenderer SKIA_RENDERER = new SkiaRenderer(WINDOW.getWindowEventHandler());
-    // Main scene for rendering (now Login Scene)
 
     public static void main(String[] args) {
         // Startup logic...
-        LOGGER.info("Starting... version: {}", VERSION);
+        LOGGER.info("Starting... build: {}", VERSION);
         // Trying to create window
         LOGGER.warn("Trying to create window...");
         // Start Rendering
         WINDOW.loop(new Runnable() {
             @Override
             public void run() {
-                SKIA_RENDERER.render(null);
+                SKIA_RENDERER.render(c -> c.drawColor(-1));
             }
         });
     }
