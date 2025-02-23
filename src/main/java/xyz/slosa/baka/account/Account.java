@@ -1,4 +1,4 @@
-package xyz.slosa.util.account;
+package xyz.slosa.baka.account;
 
 
 import xyz.slosa.BakalariAPI;

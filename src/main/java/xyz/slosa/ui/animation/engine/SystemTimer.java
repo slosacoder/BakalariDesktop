@@ -1,4 +1,4 @@
-package xyz.slosa.util;
+package xyz.slosa.ui.animation.engine;
 
 public final class SystemTimer {
     private long currentTimeMillis = System.currentTimeMillis();
