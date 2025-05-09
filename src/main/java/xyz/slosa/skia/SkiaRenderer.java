@@ -8,9 +8,14 @@ import java.util.function.Consumer;
 import static io.github.humbleui.skija.FramebufferFormat.GR_GL_RGBA8;
 import static io.github.humbleui.skija.SurfaceColorFormat.RGBA_8888;
 import static io.github.humbleui.skija.SurfaceOrigin.BOTTOM_LEFT;
-import static xyz.slosa.BakalariDesktopClient.*;
+import static xyz.slosa.BakalariDesktopClient.HEIGHT;
+import static xyz.slosa.BakalariDesktopClient.WIDTH;
 
-
+/**
+ * @author slosa
+ * @created 03.11.24, Sunday
+ * CC BakalariDesktop's contributors, use according to the license!
+ **/
 public class SkiaRenderer {
 
     // Skia DirectContext to manage OpenGL state and operations

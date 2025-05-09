@@ -36,7 +36,7 @@ val lwjglNatives = Pair(
     }
 }
 
-val skijaVersion = "0.116.2"
+val skijaVersion = "0.116.4"
 val skijaNatives = Pair(
     System.getProperty("os.name")!!,
     System.getProperty("os.arch")!!

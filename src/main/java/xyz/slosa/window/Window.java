@@ -12,6 +12,11 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
+/**
+ * @author slosa
+ * @created 03.11.24, Sunday
+ * CC BakalariDesktop's contributors, use according to the license!
+ **/
 public class Window {
     // Basic variables for tracking
     private final String title;

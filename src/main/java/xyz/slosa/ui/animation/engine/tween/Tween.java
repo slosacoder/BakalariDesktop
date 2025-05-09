@@ -1,5 +1,10 @@
 package xyz.slosa.ui.animation.engine.tween;
 
+/**
+ * @author slosa
+ * @created 03.11.24, Sunday
+ * CC BakalariDesktop's contributors, use according to the license!
+ **/
 // Class used for interpolating between 2 poses
 public abstract class Tween {
     protected final double duration;

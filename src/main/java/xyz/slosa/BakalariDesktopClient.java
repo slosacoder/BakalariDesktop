@@ -4,7 +4,7 @@ package xyz.slosa;
 import org.tinylog.Logger;
 import org.tinylog.TaggedLogger;
 import xyz.slosa.skia.SkiaRenderer;
-import xyz.slosa.ui.scene.scenes.LoginScene;
+import xyz.slosa.ui.system.screen.ScreenHandler;
 import xyz.slosa.window.Window;
 
 /**
@@ -14,8 +14,8 @@ import xyz.slosa.window.Window;
  **/
 public class BakalariDesktopClient {
     // Default window size
-    public static final int WIDTH = 1000;
-    public static final int HEIGHT = 700;
+    public static final int WIDTH = 1200;
+    public static final int HEIGHT = 900;
     // App version
     public static final BakalariDesktopVersion VERSION = new BakalariDesktopVersion();
     // Loggers
@@ -25,6 +25,8 @@ public class BakalariDesktopClient {
     public static final TaggedLogger BAKA4J_LOGGER = Logger.tag("Baka4J");
     // Skia Renderer
     private static final SkiaRenderer SKIA_RENDERER = new SkiaRenderer(WINDOW.getWindowEventHandler());
+    // Handlers
+    private static final ScreenHandler SCREEN_HANDLER = new ScreenHandler(WINDOW.getWindowEventHandler());
 
     public static void main(String[] args) {
         // Startup logic...
@@ -35,7 +37,9 @@ public class BakalariDesktopClient {
         WINDOW.loop(new Runnable() {
             @Override
             public void run() {
-                SKIA_RENDERER.render(c -> c.drawColor(-1));
+                SKIA_RENDERER.render(canvas -> {
+                    SCREEN_HANDLER.drawScreens(canvas); // perform actual drawing
+                });
             }
         });
     }

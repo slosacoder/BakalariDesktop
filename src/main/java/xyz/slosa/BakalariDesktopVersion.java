@@ -1,5 +1,10 @@
 package xyz.slosa;
 
+/**
+ * @author slosa
+ * @created 03.11.24, Sunday
+ * CC BakalariDesktop's contributors, use according to the license!
+ **/
 public final class BakalariDesktopVersion {
     private final String title, version; // Display window title
     private final String semanticVersion, branch, commitSHA;
