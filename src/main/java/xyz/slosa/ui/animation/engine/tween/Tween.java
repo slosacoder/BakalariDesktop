@@ -7,6 +7,7 @@ package xyz.slosa.ui.animation.engine.tween;
  **/
 // Class used for interpolating between 2 poses
 public abstract class Tween {
+
     protected final double duration;
     private long startTime;
     private double start;

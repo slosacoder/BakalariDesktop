@@ -17,7 +17,6 @@ import static xyz.slosa.BakalariDesktopClient.WIDTH;
  * CC BakalariDesktop's contributors, use according to the license!
  **/
 public class SkiaRenderer {
-
     // Skia DirectContext to manage OpenGL state and operations
     private DirectContext context;
 

@@ -6,6 +6,7 @@ package xyz.slosa.ui.animation.engine;
  * CC BakalariDesktop's contributors, use according to the license!
  **/
 public final class SystemTimer {
+
     private long currentTimeMillis = System.currentTimeMillis();
 
     public boolean elapsed(final long amount) {

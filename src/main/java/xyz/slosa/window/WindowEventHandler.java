@@ -10,6 +10,7 @@ import static org.lwjgl.glfw.GLFW.*;
  * CC BakalariDesktop's contributors, use according to the license!
  **/
 public class WindowEventHandler {
+
     private final Window window;
 
     public WindowEventHandler(final Window window) {

@@ -22,3 +22,9 @@ The official web interface of the Bakalari system can often be slow and restrict
 - **Optimized Resource Management**: Leveraging desktop computing power, BakalariDesktop can manage memory and CPU resources more effectively than a browser, enhancing both speed and efficiency.
 
 ---
+
+## Credits
+
+- **Bakalari team**: The Bakalari system is a powerful tool for schools, and this project aims to enhance its usability and performance.
+- **Jones**: Various codesnippets and ideas are from a project that i worked with him
+- **nevalackin**: The screen and handler API

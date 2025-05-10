@@ -6,6 +6,7 @@ package xyz.slosa;
  * CC BakalariDesktop's contributors, use according to the license!
  **/
 public final class BakalariDesktopVersion {
+
     private final String title, version; // Display window title
     private final String semanticVersion, branch, commitSHA;
 

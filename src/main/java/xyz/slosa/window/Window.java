@@ -54,6 +54,7 @@ public class Window {
             final GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
             // Center the window
+            assert vidmode != null;
             glfwSetWindowPos(
                     windowPointer,
                     (vidmode.width() - pWidth.get(0)) / 2,

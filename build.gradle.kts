@@ -9,7 +9,7 @@ repositories {
     mavenCentral()
 }
 
-val lwjglVersion = "3.3.5-SNAPSHOT"
+val lwjglVersion = "3.3.6"
 val lwjglNatives = Pair(
     System.getProperty("os.name")!!,
     System.getProperty("os.arch")!!
